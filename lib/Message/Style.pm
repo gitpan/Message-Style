@@ -2,11 +2,11 @@ package Message::Style;
 require 5.005;
 use strict;
 use vars qw( $VERSION @ISA );
-# $Id: Style.pm,v 1.1 2004/10/22 20:57:27 abuse Exp $
-$VERSION = do { my @r=(q$Revision: 1.1 $=~/\d+/g); sprintf "%d."."%03d"x$#r,@r };
+# $Id: Style.pm,v 1.3 2004/10/26 15:53:37 abuse Exp $
+$VERSION = do { my @r=(q$Revision: 1.3 $=~/\d+/g); sprintf "%d."."%03d"x$#r,@r };
 
-use Carp;
-use Data::Dumper;
+#use Carp;
+#use Data::Dumper;
 
 =head1 NAME
 
@@ -254,8 +254,9 @@ sub score {
 	map { $bscore+=length; $lscore++ } @article;
     }
 
-    
-    my $groups=($header{newsgroups}=~tr[,][,])+1;
+  my $groups=1;
+  $groups=($header{newsgroups}=~tr[,][,])+1
+    if defined $header{newsgroups};
     my $score=int(($lscore*40+$bscore)*sqrt $groups);
     my $name=$header{from};
 
@@ -268,7 +269,7 @@ sub score {
   # that used %fault, even though this package doesn't do anything
   # useful with it.
 
-  carp Dumper \@article, \%fault, \%meta;
+#  carp Dumper \@article, \%fault, \%meta;
 
   return $score;
 
